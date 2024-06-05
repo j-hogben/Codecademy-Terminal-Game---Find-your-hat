@@ -14,28 +14,46 @@ class Field {
     this.field[0][0] = pathCharacter;
   }
 
+  // Extract field from array and print to console
   print() {
     for (let i = 0; i < this.field.length; i++) { 
       console.log(this.field[i].join(''));
     }
   }
 
+  // Check if current position is within field bounds
+  isInBounds() {
+    return (
+      this.positionX >= 0 &&
+      this.positionY >= 0 &&
+      this.positionX < this.field.length &&
+      this.positionY < this.field[0].length
+      )
+  }
+
+  // Check if current position is the hat
+  isHat() {
+    return (this.field[this.positionX][this.positionY] === hat);
+  }
+
+  // Check if current position is a hole
+  isHole() {
+    return (this.field[this.positionX][this.positionY] === hole)
+  }
+
   updatePosition() {
     // If out of bounds, print loser message and end game
-    if (this.positionX < 0 || 
-        this.positionX > this.field.length - 1 || 
-        this.positionY < 0 || 
-        this.positionY > this.field[0].length - 1) {
+    if (!this.isInBounds()) {
       console.log('Sorry, you are out of bounds! Game over.')
       this.gameActive = false;
 
       // If hat found, print winner message and end game
-    } else if (this.field[this.positionX][this.positionY] === hat) {
+    } else if (this.isHat()) {
         console.log('Congratulations, you win! You have found your hat.');
         this.gameActive = false;
 
       // If hole found, print loser message and end game
-    } else if (this.field[this.positionX][this.positionY] === hole) {
+    } else if (this.isHole()) {
         console.log('Sorry, you fell down a hole! Game over.')
         this.gameActive = false;
 
@@ -81,7 +99,7 @@ class Field {
 
 const myField = new Field([
   ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
+  ['░', '░', '░', '^', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
   ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
   ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
   ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
