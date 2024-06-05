@@ -6,12 +6,47 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-  constructor(field) {
+  constructor(field = [[]]) {
     this.field = field;
     this.positionX = 0;
     this.positionY = 0;
     this.gameActive = false;
     this.field[0][0] = pathCharacter;
+  }
+
+  // Generate randomly filled field
+  static generateField(height, width, percOfHoles) {
+    const generatedField = [[]];
+    for (let i = 0; i < height; i++) {
+      generatedField[i] = [];
+      for (let j = 0; j < width; j++) {
+        generatedField[i][j] = ['░'];
+      }
+    }
+
+    // Generate random positions
+    const randomPositionX = () => Math.floor(Math.random() * height)
+    const randomPositionY = () => Math.floor(Math.random() * width)
+
+    // Place hat on grid, not on initial pathCharacter space
+    let randomX, randomY;
+    do {
+      randomX = randomPositionX();
+      randomY = randomPositionY();
+    } while (generatedField[randomX][randomY] === ['*']);
+    generatedField[randomX][randomY] = ['^'];
+
+    // Place holes, not on hat, pathCharacter or other hole
+    const numOfHoles = (height * width) * (percOfHoles / 100);
+    for (let i = 0; i < numOfHoles; i++) {
+      do {
+        randomX = randomPositionX();
+        randomY = randomPositionY();
+      } while (generatedField[randomX][randomY] != fieldCharacter);
+      generatedField[randomX][randomY] = ['O'];
+    }
+
+    return generatedField;
   }
 
   // Extract field from array and print to console
@@ -94,18 +129,5 @@ class Field {
   }
 }
 
-// const myfield = new Field(Field.generateField(8, 20, 20));
-// myfield.playGame();
-
-const myField = new Field([
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '^', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░'], 
-  ['░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░', '░']
-]);
-
+const myField = new Field(Field.generateField(8, 20, 20));
 myField.playGame();
