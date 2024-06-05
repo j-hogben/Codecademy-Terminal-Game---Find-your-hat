@@ -11,7 +11,6 @@ class Field {
     this.positionX = 0;
     this.positionY = 0;
     this.gameActive = false;
-    this.field[0][0] = pathCharacter;
   }
 
   // Generate randomly filled field
