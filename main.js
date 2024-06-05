@@ -16,25 +16,25 @@ class Field {
 
   // Generate randomly filled field
   static generateField(height, width, percOfHoles) {
-    const generatedField = [[]];
+    const generatedField = [];
     for (let i = 0; i < height; i++) {
       generatedField[i] = [];
       for (let j = 0; j < width; j++) {
-        generatedField[i][j] = ['░'];
+        generatedField[i][j] = fieldCharacter;
       }
     }
 
     // Generate random positions
-    const randomPositionX = () => Math.floor(Math.random() * height)
-    const randomPositionY = () => Math.floor(Math.random() * width)
+    const randomPositionX = () => Math.floor(Math.random() * height);
+    const randomPositionY = () => Math.floor(Math.random() * width);
 
     // Place hat on grid, not on initial pathCharacter space
     let randomX, randomY;
     do {
-      randomX = randomPositionX();
-      randomY = randomPositionY();
-    } while (generatedField[randomX][randomY] === ['*']);
-    generatedField[randomX][randomY] = ['^'];
+          randomX = randomPositionX();
+          randomY = randomPositionY();
+        } while (generatedField[randomX][randomY] != fieldCharacter);
+        generatedField[randomX][randomY] = hat;
 
     // Place holes, not on hat, pathCharacter or other hole
     const numOfHoles = (height * width) * (percOfHoles / 100);
@@ -43,7 +43,7 @@ class Field {
         randomX = randomPositionX();
         randomY = randomPositionY();
       } while (generatedField[randomX][randomY] != fieldCharacter);
-      generatedField[randomX][randomY] = ['O'];
+      generatedField[randomX][randomY] = hole;
     }
 
     return generatedField;
@@ -129,5 +129,5 @@ class Field {
   }
 }
 
-const myField = new Field(Field.generateField(8, 20, 20));
+const myField = new Field(Field.generateField(5, 10, 10));
 myField.playGame();
